@@ -1,8 +1,10 @@
 import aiohttp
 import asyncio
 import csv
+from utils.send_email import Send_email  # Importa a classe Send_email do seu arquivo send_email.py
 
 async def getFeriados(ano):
+    print("requisitando a api...")
     async with aiohttp.ClientSession() as session:
         async with session.get(f'https://api.invertexto.com/v1/holidays/{ano}?token=7033|ZVVQjtkDJ1c2ra1p34C0NMaigkQAUri7&state=PB') as response:
             if response.status == 200:
@@ -11,6 +13,7 @@ async def getFeriados(ano):
                 raise Exception(f"ocorreu o seguinte erro: {response.status}") 
 
 async def buscarDados(ano, response):
+    print("buscando os dados...")
     feriados_formatados = []
     for data_feriado in response:
         date = data_feriado['date']
@@ -35,5 +38,11 @@ async def main():
         writer.writerow(['Ano', 'Data', 'Nome', 'Tipo'])
         writer.writerows(feriados_total)
 
+    # Envia o email com o arquivo CSV como anexo
+    print("enviando o email..")
+    send_email = Send_email()
+    send_email.send_email()
+
 if __name__ == '__main__':
+    print("começando o processo de envio...")
     asyncio.run(main())

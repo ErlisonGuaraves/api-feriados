@@ -5,12 +5,12 @@ from email import encoders
 from dotenv import load_dotenv
 import os
 
-class Send_email:
-    def __init__(self):
+class SendEmail:
+    def __init__(self, remetente, destinatario):
         load_dotenv()  # Carrega as variáveis de ambiente do arquivo .env
-        self.from_email = os.getenv('EMAIL_FROM')
-        self.to_email = os.getenv('EMAIL_TO')
-        self.password = os.getenv('PASS_KEY')
+        self.from_email = remetente
+        self.to_email = destinatario
+        self.password = os.getenv("PASS_KEY")
 
     def send_email(self):
         msg = MIMEMultipart()

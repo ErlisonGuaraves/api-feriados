@@ -39,9 +39,9 @@ async def main():
         writer.writerows(feriados_total)
 
     # Envia o email com o arquivo CSV como anexo
-    print("enviando o email..")
-    send_email = Send_email()
-    send_email.send_email()
+    #print("enviando o email..")
+    #send_email = Send_email()
+    #send_email.send_email()
 
 if __name__ == '__main__':
     print("começando o processo de envio...")

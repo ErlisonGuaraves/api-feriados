@@ -6,27 +6,21 @@ from utils.feriados_api import FeriadosAPI
 
 
 async def main():
-    # Instanciação da classe FeriadosAPI
     api = FeriadosAPI(token=f'{getenv("token")}', state='PB')
 
-    # Anos para os quais você deseja obter os feriados
-    anos = list(range(2021, 2099+1))
+    anos = list(range(2021, 2099 + 1))
 
-    feriados_total = []
+    # multiplas requisições executadas ao mesmo tempo, de forma paralela 🤓
+    results = await asyncio.gather(*(FeriadosAPI.fetch_feriados(api, ano) for ano in anos))
 
-    for ano in anos:
-        data_feriado_response = await api.get_feriados(ano)
-        print(f'processando feriados de: {ano}')
-        if data_feriado_response:
-            feriados_formatados = [[ano, feriado['date'], feriado['name'], feriado['type']] for feriado in data_feriado_response]
-            feriados_total.extend(feriados_formatados)
+    # Filtra e combina os resultados
+    feriados_total = [feriado for result in results for feriado in result]
 
-    
-    #gera o csv
+    # Gera o CSV
     csv_generator = CSVGenerator()
     csv_generator.generate_csv(feriados_total)
 
-    print("processo concluido")
+    print("Processo concluído")
    
 
 if __name__ == '__main__':

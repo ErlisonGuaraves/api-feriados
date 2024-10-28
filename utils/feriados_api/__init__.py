@@ -14,3 +14,11 @@ class FeriadosAPI:
                     return await response.json()
                 else:
                     raise Exception(f"Ocorreu o seguinte erro ao obter os feriados do ano {ano}: {response.status}")
+
+
+    async def fetch_feriados(api, ano):
+        print(f"lendo feriado do ano: {ano}")
+        data_feriado_response = await api.get_feriados(ano)
+        if data_feriado_response:
+            return [[ano, feriado['date'], feriado['name'], feriado['type']] for feriado in data_feriado_response]
+        return []

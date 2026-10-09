@@ -9,7 +9,6 @@ async def main():
     load_dotenv() 
     api = FeriadosAPI(token=f'{getenv("token")}', state='SP')
     anos = list(range(2021, 2099 + 1))
-    print(getenv("token"))
     # multiplas requisições executadas ao mesmo tempo, de forma paralela 🤓
     results = await asyncio.gather(*(api.fetch_feriados(ano) for ano in anos))
 

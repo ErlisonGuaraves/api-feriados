@@ -1,0 +1,12 @@
+# Pipeline api-feriados. Job sob demanda (profile "jobs"): nao sobe com 'docker compose up'.
+# Rodar:  docker compose run --rm api-feriados
+# Credenciais em .env (fora do Git). Projeto deve ficar em /opt/datawarehouse/api-feriados.
+services:
+  api-feriados:
+    build: .
+    image: dw/api-feriados:latest
+    profiles: ["jobs"]
+    env_file: .env
+    volumes:
+      # rh_dwh_calendario_insert.ktr le este CSV (no Windows: C:/DataWarehouse/api-feriados/feriados_total.csv)
+      - ./feriados_total.csv:/app/feriados_total.csv
